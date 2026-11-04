@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piotr Czerski – Senior SQL Developer</title>
+<meta name="description" content="Senior SQL Developer in Warsaw. MS SQL Server, T-SQL, SSIS, SSRS and Power BI. Scroll deeper: experience, projects, skills and contact.">
+<meta property="og:title" content="Piotr Czerski – Senior SQL Developer">
+<meta property="og:description" content="MS SQL Server, T-SQL, SSIS, SSRS and Power BI. Turning business requirements into reliable data solutions.">
+<meta name="theme-color" content="#1C2D52">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1C2D52; --bg2:#0B1429; --accent:#7FB2FF; --ink:#ECF1FA; --muted:#AEBACE;
+  --glass:rgba(8,14,30,.58); --line:rgba(236,241,250,.15);
+  --kw:#8DB8FF; --str:#FFB59E; --com:#8FD19A;
+  --display:"Bricolage Grotesque","Instrument Sans",system-ui,sans-serif;
+  --body:"Instrument Sans",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:radial-gradient(120% 90% at 50% 45%,var(--bg) 0%,var(--bg2) 78%) fixed;background-color:var(--bg2);color:var(--ink);font:400 17px/1.55 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- tunnel ---------- */
+#tunnel{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ---------- HUD ---------- */
+.hud-top{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:18px 28px;pointer-events:none}
+.hud-top a{pointer-events:auto}
+.hud-top .name{font:600 17px/1 var(--display);color:var(--ink);text-decoration:none}
+.hud-top .links{display:flex;gap:20px}
+.hud-top .links a{color:var(--ink);text-decoration:none;font-size:15px;opacity:.85}
+.hud-top .links a:hover{opacity:1;color:var(--accent)}
+
+.depth{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:16px}
+.depth button{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;justify-content:flex-end;color:var(--muted);font-size:13px}
+.depth .dot{width:10px;height:10px;border-radius:2px;border:1.5px solid currentColor;transition:transform .35s,background .35s}
+.depth .lbl{opacity:0;transform:translateX(6px);transition:opacity .25s,transform .25s;white-space:nowrap}
+.depth button:hover .lbl,.depth button:focus-visible .lbl{opacity:1;transform:none}
+.depth button.on{color:var(--accent)}
+.depth button.on .dot{background:var(--accent);transform:rotate(45deg) scale(1.15)}
+@media (min-width:1400px){.depth button.on .lbl{opacity:1;transform:none}}
+
+.crumb{position:fixed;left:28px;bottom:22px;z-index:30;font:400 13px/1.2 var(--mono);color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap;pointer-events:none}
+.crumb span{transition:color .35s,opacity .35s;opacity:.55}
+.crumb span.lit{opacity:1;color:var(--ink)}
+.crumb .meter{opacity:1;color:var(--accent)}
+.crumb .sep{opacity:.4}
+
+/* ---------- worlds ---------- */
+#stage{position:fixed;inset:0;z-index:10;perspective:1200px;perspective-origin:50% 50%;overflow:hidden}
+.world{position:absolute;inset:0;display:grid;place-items:center;padding:92px 112px 80px 92px;will-change:transform,opacity;backface-visibility:hidden}
+.world .inner{width:min(1040px,100%);transform-origin:50% 50%}
+.spacer{height:100vh}
+.snap{position:absolute;left:0;width:1px;height:1px;scroll-snap-align:start;pointer-events:none}
+html.snapon{scroll-snap-type:y mandatory}
+
+.kicker{font:500 14px/1.3 var(--mono);color:var(--accent);margin:0 0 12px}
+h2.title{font:800 clamp(40px,5.2vw,74px)/.98 var(--display);letter-spacing:-.025em;margin:0 0 12px}
+.sub{color:var(--muted);max-width:60ch;margin:0 0 26px;font-size:18px}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:14px}
+
+/* about */
+.w-about .inner{display:grid;grid-template-columns:1fr 1.02fr;gap:52px;align-items:center}
+.w-about h1{font:800 clamp(54px,7.4vw,112px)/.88 var(--display);letter-spacing:-.04em;margin:0 0 20px}
+.w-about h1 .role{display:block;font-weight:400;font-size:.4em;line-height:1.1;letter-spacing:-.01em;color:var(--accent);margin-top:16px}
+.w-about .lede{font-size:19px;color:var(--muted);max-width:42ch;margin:0 0 28px}
+.cue{display:inline-flex;align-items:center;gap:10px;font-size:15px;color:var(--ink);opacity:.85}
+.cue svg{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+.editor{overflow:hidden}
+.editor .bar{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--line);font:400 12.5px/1 var(--mono);color:var(--muted)}
+.editor .bar i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--line);margin-right:6px}
+pre.sql{margin:0;padding:16px 16px 16px 0;font:400 14px/1.75 var(--mono);min-height:156px;white-space:pre;overflow-x:auto;overflow-y:hidden}
+pre.sql .ln{display:inline-block;width:40px;text-align:right;padding-right:14px;color:rgba(236,241,250,.3);user-select:none}
+.k{color:var(--kw);font-weight:500}.s{color:var(--str)}.c{color:var(--com)}
+.caret{display:inline-block;width:8px;height:1.05em;vertical-align:-2px;background:var(--accent);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.rbar{display:flex;gap:16px;padding:8px 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.rbar b{color:var(--ink);font-weight:500}
+table.grid{width:100%;border-collapse:collapse;font-size:14px}
+table.grid th,table.grid td{text-align:left;padding:8px 14px;border-bottom:1px solid var(--line)}
+table.grid tr:last-child td{border-bottom:0}
+table.grid th{color:var(--muted);font-weight:500}
+table.grid td.rn{width:36px;color:var(--muted);text-align:right}
+html.js tr.row{opacity:0;transform:translateX(-8px);transition:opacity .45s ease,transform .45s ease}
+html.js tr.row.on{opacity:1;transform:none}
+tr.row:first-child td{background:rgba(127,178,255,.13)}
+
+/* experience */
+.w-exp .cols{display:grid;grid-template-columns:1.15fr 1fr;gap:36px}
+.era{padding-left:22px;border-left:1px solid var(--line)}
+.era h3{font:500 13px/1.2 var(--mono);color:var(--accent);margin:0 0 14px}
+.job{position:relative;margin:0 0 15px}
+.job::before{content:"";position:absolute;left:-27px;top:7px;width:9px;height:9px;border-radius:2px;background:var(--bg2);border:1.5px solid var(--muted)}
+.job.hot::before{background:var(--accent);border-color:var(--accent);transform:rotate(45deg)}
+.job .when{font-size:13px;color:var(--muted)}
+.job h4{margin:1px 0 2px;font:600 18px/1.25 var(--display)}
+.job p{margin:0;font-size:14.5px;color:var(--muted);max-width:54ch}
+
+/* projects */
+.w-proj .tiles{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tile{padding:20px 22px;display:flex;flex-direction:column;gap:8px;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,background-color .35s}
+.tile:hover{transform:translateY(-4px);border-color:var(--accent);background-color:rgba(8,14,30,.74)}
+.tile h3{margin:0;font:600 22px/1.15 var(--display)}
+.tile .stack{font:400 12.5px/1.4 var(--mono);color:var(--accent)}
+.tile p{margin:0;color:var(--muted);font-size:15px}
+.tile a{margin-top:auto;padding-top:4px;font-weight:500;font-size:15px}
+
+/* skills */
+.w-skills .groups{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.group{padding:18px 18px 10px}
+.group h3{margin:0 0 8px;font:600 17px/1.2 var(--display)}
+.group ul{list-style:none;margin:0;padding:0}
+.group li{padding:7px 0;border-top:1px solid var(--line);font-size:14.5px}
+.group li:first-child{border-top:0}
+.group.core{border-color:var(--accent)}
+
+/* contact */
+.w-contact .inner{text-align:center;display:flex;flex-direction:column;align-items:center}
+.w-contact h2.title{font-size:clamp(46px,6.4vw,96px)}
+.w-contact .sub{margin-left:auto;margin-right:auto}
+.cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;padding:14px 24px;border-radius:999px;text-decoration:none;font-weight:600;font-size:16px;border:1.5px solid var(--accent);color:var(--ink);transition:background-color .25s,transform .25s}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:var(--accent);color:#1A1405}
+.btn:not(.primary):hover{background-color:rgba(255,255,255,.07)}
+.rowcard{margin:34px auto 0;overflow:hidden;text-align:left;min-width:min(420px,100%)}
+.rowcard .msg{margin:0;padding:8px 14px;border-top:1px solid var(--line);font:400 12.5px/1.4 var(--mono);color:var(--muted)}
+
+/* ---------- flat mode: phones, tablets, reduced motion, no JS ---------- */
+body.flat #stage{position:relative;perspective:none;overflow:visible}
+body.flat .world{position:relative;inset:auto;min-height:100vh;padding:96px 20px 72px;transform:none!important;opacity:1!important;pointer-events:auto!important}
+body.flat .spacer,body.flat .depth{display:none}
+body.flat .crumb{left:12px;bottom:12px;font-size:11.5px;background:rgba(8,14,30,.78);padding:6px 10px;border-radius:6px}
+body.flat .hud-top{padding:14px 18px;background:linear-gradient(var(--bg2),rgba(0,0,0,0))}
+html.js body.flat .fx{opacity:0;transform:translateY(18px) scale(.985);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+html.js body.flat .fx.in{opacity:1;transform:none}
+@media (max-width:999px){
+  .w-about .inner,.w-exp .cols,.w-proj .tiles{grid-template-columns:1fr}
+  .w-about .inner{gap:32px}
+  .w-skills .groups{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){.hud-top .links,.crumb{display:none}}
+@media (max-width:520px){.w-skills .groups{grid-template-columns:1fr} pre.sql{font-size:12px} table.grid{font-size:13px} table.grid th,table.grid td{padding:7px 9px}}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html.js body.flat .fx{opacity:1;transform:none}
+}
+</style>
+</head>
+<body class="flat">
+<canvas id="tunnel" aria-hidden="true"></canvas>
+
+<header class="hud-top">
+  <a class="name" href="#about" data-go="0">Piotr Czerski</a>
+  <nav class="links" aria-label="Profiles">
+    <a href="https://www.linkedin.com/in/piotr-czerski/">LinkedIn</a>
+    <a href="https://github.com/piotr10">GitHub</a>
+  </nav>
+</header>
+
+<nav class="depth" aria-label="Levels">
+  <button data-go="0" class="on"><span class="lbl">About</span><span class="dot"></span></button>
+  <button data-go="1"><span class="lbl">Experience</span><span class="dot"></span></button>
+  <button data-go="2"><span class="lbl">Projects</span><span class="dot"></span></button>
+  <button data-go="3"><span class="lbl">Skills</span><span class="dot"></span></button>
+  <button data-go="4"><span class="lbl">Contact</span><span class="dot"></span></button>
+</nav>
+
+<div class="crumb" aria-hidden="true">
+  <span class="meter" id="meter">depth 0</span><span class="sep">|</span>
+  <span data-l="0" class="lit">PIOTR-SQL01</span><span class="sep">›</span>
+  <span data-l="1">Career</span><span class="sep">›</span>
+  <span data-l="2">dbo.Projects</span><span class="sep">›</span>
+  <span data-l="3">dbo.Skills</span><span class="sep">›</span>
+  <span data-l="4">@contact</span>
+</div>
+
+<main id="stage">
+  <!-- 0 · ABOUT -->
+  <section class="world w-about" id="about" aria-labelledby="h-about">
+    <div class="inner">
+      <div class="fx">
+        <h1 id="h-about">Piotr Czerski<span class="role">Senior SQL Developer</span></h1>
+        <p class="lede">I build the SQL Server layer that reporting and business applications run on: T-SQL, SSIS pipelines, SSRS and Power BI. Eight years with the same data, from HR records to production databases.</p>
+        <span class="cue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v15M5 12l7 7 7-7"/></svg>Scroll to go deeper</span>
+      </div>
+      <div class="editor glass fx">
+        <div class="bar"><span><i></i><i></i><i></i>about_me.sql</span><span>MS SQL Server</span></div>
+        <pre class="sql" id="sql" aria-hidden="true"><span class="ln">1</span><span class="c">-- Who I am, in the language I use daily</span>
+<span class="ln">2</span><span class="k">SELECT</span> role, since, focus
+<span class="ln">3</span><span class="k">FROM</span>   dbo.Career
+<span class="ln">4</span><span class="k">WHERE</span>  person = <span class="s">'Piotr Czerski'</span>
+<span class="ln">5</span><span class="k">ORDER BY</span> since <span class="k">DESC</span>;</pre>
+        <span class="visually-hidden">Query: select role, since and focus from dbo.Career where person is Piotr Czerski, ordered by date, newest first.</span>
+        <div class="rbar"><span><b>Results</b></span><span id="rows-msg">3 rows affected</span></div>
+        <table class="grid">
+          <thead><tr><th class="rn" scope="col"><span class="visually-hidden">Row</span></th><th scope="col">role</th><th scope="col">since</th><th scope="col">focus</th></tr></thead>
+          <tbody>
+            <tr class="row"><td class="rn">1</td><td>Senior SQL Developer</td><td>2026-01</td><td>T-SQL, query tuning, L2/L3</td></tr>
+            <tr class="row"><td class="rn">2</td><td>SQL Developer</td><td>2024-03</td><td>SSIS, SSRS, Power BI</td></tr>
+            <tr class="row"><td class="rn">3</td><td>Junior SQL Developer</td><td>2022-12</td><td>From analytics into IT</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1 · EXPERIENCE -->
+  <section class="world w-exp" id="experience" aria-labelledby="h-exp">
+    <div class="inner">
+      <p class="kicker">USE Career;</p>
+      <h2 class="title fx" id="h-exp">Experience</h2>
+      <p class="sub fx">I know this data from both sides: where people type it in, and where the business reads it.</p>
+      <div class="cols fx">
+        <div class="era">
+          <h3>SQL development, 2022 – today</h3>
+          <div class="job hot"><span class="when">Jan 2026 – present</span><h4>Senior SQL Developer</h4><p>Stored procedures, views and functions, query tuning, SSIS and SSRS for applications across the capital group. Implementation sign-off and vendor coordination.</p></div>
+          <div class="job"><span class="when">Mar 2024 – Dec 2025</span><h4>SQL Developer</h4><p>T-SQL solutions built from business requirements, ETL in SSIS, reporting in SSRS and Power BI, automated application maintenance.</p></div>
+          <div class="job"><span class="when">Dec 2022 – Feb 2024</span><h4>Junior SQL Developer</h4><p>Systems Maintenance team under the IT Manager: requirements, implementation, testing, documentation, L2/L3 support.</p></div>
+        </div>
+        <div class="era">
+          <h3>How I got here, 2016 – 2022</h3>
+          <div class="job"><span class="when">Sep 2021 – Nov 2022</span><h4>Junior Sales Analyst</h4><p>Automated sales reporting on the data warehouse with Power Query and Power BI.</p></div>
+          <div class="job"><span class="when">Nov 2018 – Aug 2021</span><h4>HR &amp; Payroll Specialist</h4><p>Promoted twice. Settlement issues solved at database level.</p></div>
+          <div class="job"><span class="when">Aug – Nov 2018</span><h4>Junior Freight Forwarder</h4><p>Transport orders in the SPEED system.</p></div>
+          <div class="job"><span class="when">Apr 2016 – May 2018</span><h4>Land Surveyor, G4 Geodezja</h4><p>Precision surveying, AutoCAD maps, technical documentation.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · PROJECTS -->
+  <section class="world w-proj" id="projects" aria-labelledby="h-proj">
+    <div class="inner">
+      <p class="kicker">SELECT * FROM dbo.Projects;</p>
+      <h2 class="title fx" id="h-proj">Projects</h2>
+      <p class="sub fx">Built on my own time. Every one of them stores its data in SQL Server.</p>
+      <div class="tiles fx">
+        <article class="tile glass"><h3>Bookstore Management API</h3><span class="stack">.NET 6, EF Core, SQL Server, MediatR</span><p>REST API with Clean Architecture and CQRS. 37 migrations, automatic audit trail, JWT security, unit and integration tests.</p><a href="https://github.com/piotr10/BookstoreManagmentAPI">View code on GitHub</a></article>
+        <article class="tile glass"><h3>WarehouseMVC</h3><span class="stack">ASP.NET Core MVC, EF Core, SQL Server</span><p>Recruitment and onboarding system with a four-step hiring approval: Recruitment, Controlling, CFO, Payroll.</p><a href="https://github.com/piotr10/WarehouseMVC">View code on GitHub</a></article>
+        <article class="tile glass"><h3>Holidayview</h3><span class="stack">ASP.NET Core MVC, EF Core, SQL Server</span><p>Annual leave management: employees, reporting lines and leave balances in one relational model.</p><a href="https://github.com/piotr10/Holidayview">View code on GitHub</a></article>
+        <article class="tile glass"><h3>PepperAutomatic</h3><span class="stack">.NET 8, Selenium, SQL Server</span><p>Extracts live deals from pepper.pl and loads them into SQL Server with parameterised inserts.</p><a href="https://github.com/piotr10/PepperAutomatic">View code on GitHub</a></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · SKILLS -->
+  <section class="world w-skills" id="skills" aria-labelledby="h-skills">
+    <div class="inner">
+      <p class="kicker">EXEC dbo.GetSkills @level = 'production';</p>
+      <h2 class="title fx" id="h-skills">Skills</h2>
+      <p class="sub fx">What I use at work every week, and what I build with after hours.</p>
+      <div class="groups fx">
+        <div class="group glass core"><h3>Database</h3><ul><li>Microsoft SQL Server</li><li>T-SQL</li><li>Stored procedures, views, functions</li><li>Query optimization</li><li>Database design</li></ul></div>
+        <div class="group glass core"><h3>ETL &amp; reporting</h3><ul><li>SSIS</li><li>SSRS</li><li>Power BI, Power Query</li><li>Data warehousing</li><li>Data quality</li></ul></div>
+        <div class="group glass"><h3>Development</h3><ul><li>C#, .NET, ASP.NET Core</li><li>Entity Framework Core</li><li>Clean Architecture, CQRS</li><li>xUnit testing</li><li>Git, Azure DevOps</li></ul></div>
+        <div class="group glass"><h3>Ways of working</h3><ul><li>Requirements with business owners</li><li>Technical documentation</li><li>L2/L3 production support</li><li>Vendor coordination</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · CONTACT -->
+  <section class="world w-contact" id="contact" aria-labelledby="h-contact">
+    <div class="inner">
+      <p class="kicker">-- you have reached the deepest level</p>
+      <h2 class="title fx" id="h-contact">Let's talk data.</h2>
+      <p class="sub fx">Open to SQL Developer, BI Developer and Data Engineer roles: remote, hybrid or in Warsaw, on an employment or B2B contract.</p>
+      <div class="cta fx">
+        <a class="btn primary" href="https://www.linkedin.com/in/piotr-czerski/">Message me on LinkedIn</a>
+        <a class="btn" href="https://github.com/piotr10">See my GitHub</a>
+      </div>
+      <div class="rowcard glass fx">
+        <table class="grid">
+          <thead><tr><th scope="col">name</th><th scope="col">city</th><th scope="col">status</th></tr></thead>
+          <tbody><tr><td>Piotr Czerski</td><td>Warsaw</td><td>open to work</td></tr></tbody>
+        </table>
+        <p class="msg">(1 row affected)</p>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="spacer" id="spacer" aria-hidden="true"></div>
+
+<script>
+(function(){
+  /* each level has its own world: background, deep background, accent */
+  const THEMES=[
+    ['#1C2D52','#0B1429','#7FB2FF'], // about: dusk blue
+    ['#2B2658','#100E2B','#B9A6FF'], // experience: indigo
+    ['#0F3E43','#061B20','#5FE0C4'], // projects: deep teal
+    ['#3B1F49','#150A1D','#FF9EC9'], // skills: plum
+    ['#0B1527','#03060E','#FFC46B']  // contact: the abyss, with a warm light
+  ];
+  const N=5, root=document.documentElement, body=document.body;
+  const worlds=[...document.querySelectorAll('.world')];
+  const inners=worlds.map(w=>w.querySelector('.inner'));
+  const dots=[...document.querySelectorAll('.depth button')];
+  const crumbs=[...document.querySelectorAll('.crumb [data-l]')];
+  const meter=document.getElementById('meter'), spacer=document.getElementById('spacer');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DEPTH=2300, PERS=1200;
+  let flat=true, STEP=1, p=0, target=0, lastP=-1, level=-1, accNow=THEMES[0][2];
+
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+  const mix=(a,b,t)=>{a=hex(a);b=hex(b);return 'rgb('+a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(',')+')'};
+
+  function setTheme(x){
+    const i=clamp(Math.floor(x),0,N-1), j=clamp(i+1,0,N-1), t=clamp(x-i,0,1), e=t*t*(3-2*t);
+    accNow=mix(THEMES[i][2],THEMES[j][2],e);
+    root.style.setProperty('--bg',mix(THEMES[i][0],THEMES[j][0],e));
+    root.style.setProperty('--bg2',mix(THEMES[i][1],THEMES[j][1],e));
+    root.style.setProperty('--accent',accNow);
+  }
+  function setLevel(k){
+    if(k===level) return; level=k;
+    dots.forEach((d,i)=>{d.classList.toggle('on',i===k); d.setAttribute('aria-current',i===k?'step':'false')});
+    crumbs.forEach((c,i)=>c.classList.toggle('lit',i<=k));
+    meter.textContent='depth '+k;
+  }
+
+  /* ---------- mode: depth (desktop) or flat (everything else) ---------- */
+  function placeSnaps(){
+    document.querySelectorAll('.snap').forEach(s=>s.remove());
+    if(flat) return;
+    for(let i=0;i<N;i++){const s=document.createElement('div');s.className='snap';s.style.top=(i*STEP)+'px';body.appendChild(s)}
+  }
+  function applyMode(){
+    body.classList.toggle('flat',flat);
+    root.classList.toggle('snapon',!flat);
+    if(flat){
+      spacer.style.height='0px';
+      worlds.forEach((w,i)=>{w.style.transform='';w.style.opacity='';w.style.pointerEvents='';w.style.zIndex='';inners[i].style.transform=''});
+    }else{
+      STEP=Math.round(innerHeight*1.25);
+      spacer.style.height=(STEP*(N-1)+innerHeight)+'px';
+      lastP=-1;
+    }
+  }
+  /* shrink a level slightly if its content is taller than the screen; fall back to flat if it would get too small */
+  function fit(){
+    let min=1;
+    worlds.forEach((w,i)=>{
+      const inn=inners[i]; inn.style.transform='';
+      const cs=getComputedStyle(w);
+      const avail=w.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+      const f=Math.min(1,avail/inn.offsetHeight);
+      min=Math.min(min,f);
+      if(f<1) inn.style.transform='scale('+f.toFixed(3)+')';
+    });
+    return min;
+  }
+  function layout(){
+    flat = reduce || innerWidth<1000 || innerHeight<620;
+    applyMode();
+    if(!flat && fit()<.8){flat=true;applyMode()}
+    placeSnaps();
+    onScroll(); p=target; lastP=-1;
+    if(flat) setTheme(level<0?0:level);
+  }
+
+  /* ---------- the camera ---------- */
+  function render(){
+    worlds.forEach((w,i)=>{
+      const d=i-p; let z,o;
+      if(d>=0){ z=-d*DEPTH; o=d<.12?1:clamp(1-(d-.12)*1.12,0,1); }          // levels ahead wait in the distance
+      else    { z=Math.min(-d*DEPTH*.55,PERS*.75); o=clamp(1+d*2.6,0,1); }  // passed levels fly past the camera
+      w.style.transform=Math.abs(z)<.5?'none':'translate3d(0,0,'+z.toFixed(1)+'px)';
+      w.style.opacity=o.toFixed(3);
+      w.style.pointerEvents=Math.abs(d)<.35?'auto':'none';
+      w.style.zIndex=String(100-i);
+    });
+  }
+  function onScroll(){ if(!flat) target=clamp(scrollY/STEP,0,N-1); }
+  function tick(){
+    if(!flat){
+      const diff=target-p;
+      p=Math.abs(diff)<.0005?target:p+diff*.14;
+      if(p!==lastP){render();setTheme(p);setLevel(clamp(Math.round(p),0,N-1));lastP=p}
+    }
+    drawTunnel();
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- navigation ---------- */
+  function go(k){
+    k=clamp(k,0,N-1);
+    if(flat){worlds[k].scrollIntoView({behavior:reduce?'auto':'smooth'});return}
+    scrollTo({top:k*STEP,behavior:'smooth'});
+  }
+  document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();go(+b.dataset.go)}));
+  addEventListener('keydown',e=>{
+    if(flat||e.altKey||e.ctrlKey||e.metaKey) return;
+    const ae=document.activeElement, onBody=!ae||ae===body;
+    const k=clamp(Math.round(target),0,N-1);
+    if(e.key==='PageDown'||e.key==='ArrowDown'||(e.key===' '&&!e.shiftKey&&onBody)){e.preventDefault();go(k+1)}
+    else if(e.key==='PageUp'||e.key==='ArrowUp'||(e.key===' '&&e.shiftKey&&onBody)){e.preventDefault();go(k-1)}
+    else if(e.key==='Home'){e.preventDefault();go(0)}
+    else if(e.key==='End'){e.preventDefault();go(N-1)}
+  });
+  /* tabbing into a level that is still far away takes you there */
+  worlds.forEach((w,i)=>w.addEventListener('focusin',()=>{if(!flat&&Math.round(target)!==i)go(i)}));
+
+  /* ---------- flat mode: reveal sections and recolour by section ---------- */
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.querySelectorAll('.fx').forEach(x=>x.classList.add('in'));
+    if(flat){const i=worlds.indexOf(e.target);setLevel(i);setTheme(i)}
+  }),{threshold:.3});
+  worlds.forEach(w=>io.observe(w));
+
+  /* ---------- the tunnel: nested result-grid frames and drifting SQL keywords ---------- */
+  const cv=document.getElementById('tunnel'), cx=cv.getContext('2d');
+  const WORDS=['SELECT','JOIN','WHERE','GROUP BY','INDEX','MERGE','WITH cte AS','PRIMARY KEY','FOREIGN KEY','SSIS','SSRS','EXEC','BEGIN TRAN','COMMIT','OVER()','PARTITION BY','UNION ALL','TRY_CAST','ROW_NUMBER()','CREATE PROCEDURE'];
+  const toks=Array.from({length:24},(_,i)=>({w:WORDS[i%WORDS.length],x:(Math.random()-.5)*2.2,y:(Math.random()-.5)*1.7,z:Math.random()}));
+  let W=0,H=0,DPR=1;const t0=performance.now();
+  function size(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);cx.setTransform(DPR,0,0,DPR,0,0)}
+  function drawTunnel(){
+    const time=reduce?0:(performance.now()-t0)/1000;
+    const depth=(flat?scrollY/Math.max(1,innerHeight)*1.4:p*2.4)+time*.05;
+    cx.clearRect(0,0,W,H);
+    const vx=W/2, vy=H/2, K=16, frac=((depth%1)+1)%1;
+    cx.strokeStyle=accNow; cx.fillStyle=accNow;
+    for(let k=K;k>=0;k--){
+      const zz=k-frac+.001, s=1/(1+zz*.42);
+      const w=W*1.08*s, h=H*s, x=vx-w/2, y=vy-h/2, r=14*s;
+      const a=Math.max(0,Math.min(.5,(1-zz/K)*.42))*(zz<.6?zz/.6:1);
+      cx.globalAlpha=a; cx.lineWidth=Math.max(.6,1.6*s);
+      cx.beginPath();cx.moveTo(x+r,y);cx.arcTo(x+w,y,x+w,y+h,r);cx.arcTo(x+w,y+h,x,y+h,r);cx.arcTo(x,y+h,x,y,r);cx.arcTo(x,y,x+w,y,r);cx.closePath();cx.stroke();
+      cx.globalAlpha=a*.5; cx.beginPath(); cx.moveTo(x+r,y+h*.085); cx.lineTo(x+w-r,y+h*.085); cx.stroke(); // header row of a result grid
+    }
+    cx.font='500 13px "JetBrains Mono", ui-monospace, monospace';
+    toks.forEach(o=>{
+      let z=(o.z-depth*.18)%1; if(z<0) z+=1;
+      const s=1/(.08+z*1.6);
+      const px=vx+o.x*W*.5*s*.35, py=vy+o.y*H*.5*s*.35;
+      if(px<-260||px>W+260||py<-60||py>H+60) return;
+      const a=(1-z)*Math.min(1,z*6)*.22;
+      if(a<.01) return;
+      const sc=Math.min(s*.5,2.2);
+      cx.globalAlpha=a; cx.save(); cx.translate(px,py); cx.scale(sc,sc); cx.fillText(o.w,0,0); cx.restore();
+    });
+    cx.globalAlpha=1;
+  }
+
+  /* ---------- the query types itself once ---------- */
+  const pre=document.getElementById('sql');
+  const FINAL=pre.innerHTML;
+  const LINES=[...pre.querySelectorAll('.ln')].map(ln=>{let t='',n=ln.nextSibling;while(n&&!(n.nodeType===1&&n.classList.contains('ln'))){t+=n.textContent;n=n.nextSibling}return t.replace(/\n$/,'')});
+  const rows=[...document.querySelectorAll('tr.row')], msg=document.getElementById('rows-msg');
+  function showRows(){rows.forEach((r,i)=>setTimeout(()=>r.classList.add('on'),reduce?0:i*180));msg.textContent='3 rows affected, 0.004 s'}
+  function typeSQL(){
+    if(reduce){showRows();return}
+    msg.textContent='executing…';
+    const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    let li=0,ci=0;
+    (function step(){
+      if(li>=LINES.length){pre.innerHTML=FINAL;setTimeout(showRows,220);return}
+      ci++;
+      const done=LINES.slice(0,li).map((t,i)=>'<span class="ln">'+(i+1)+'</span>'+esc(t));
+      const cur='<span class="ln">'+(li+1)+'</span>'+esc(LINES[li].slice(0,ci))+'<span class="caret"></span>';
+      pre.innerHTML=done.concat(cur).join('\n');
+      if(ci>=LINES[li].length){li++;ci=0;setTimeout(step,130)}else setTimeout(step,li===0?13:24);
+    })();
+  }
+
+  /* ---------- boot ---------- */
+  size(); layout(); setTheme(flat?0:p);
+  document.querySelectorAll('.w-about .fx').forEach(x=>x.classList.add('in'));
+  addEventListener('resize',()=>{size();layout()});
+  addEventListener('scroll',onScroll,{passive:true});
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(layout);
+  const hi=worlds.findIndex(w=>'#'+w.id===location.hash); if(hi>0) setTimeout(()=>go(hi),60);
+  requestAnimationFrame(tick);
+  setTimeout(typeSQL,450);
+})();
+</script>
+</body>
+</html>
